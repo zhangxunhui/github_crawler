@@ -1,3 +1,5 @@
+*.pyc
+final_selected_projects.txt
 .idea/
 *.log
 config.yaml
