@@ -101,7 +101,7 @@ def newLoop():
 
     # define the pool for multiprocessing
     cores = multiprocessing.cpu_count()
-    pool = multiprocessing.Pool(cores)
+    pool = multiprocessing.Pool(cores / 2)
 
     print "A new loop: " + str(time.time())
     tasks = []
@@ -141,8 +141,8 @@ if __name__ == "__main__":
         try:
             newLoop()
         except Exception as e:
-            print e.message
-            time.sleep(5)
+            print str(e)
+            time.sleep(10)
             pass
         else:
             break
