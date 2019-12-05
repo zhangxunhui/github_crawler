@@ -120,9 +120,9 @@ def crawl(attr):
 
 # define the pool for multiprocessing
 cores = multiprocessing.cpu_count()
-pool = multiprocessing.Pool(cores)
+pool = multiprocessing.Pool(4)
 # put all the tasks into the pool
-pool.imap(crawl, tasks)
+pool.map(crawl, tasks)
 pool.close()
 pool.join()
 print "finish"
