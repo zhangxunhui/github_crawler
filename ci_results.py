@@ -84,11 +84,24 @@ tasks = list(set(tasks) - set(handled_tasks))
 print "finish reading pull_requests table"
 print "%d tasks left for handling" % (len(tasks))
 
+cur.close()
+db.close()
+
 
 def crawl(attr):
-    # attr["ownername"] = "andela"
-    # attr["reponame"] = "rivendell-ah-client"
-    # attr["github_id"] = 31
+    db = MySQLdb.connect(host='localhost',
+                         user=config['mysql']['user'],
+                         passwd=config['mysql']['passwd'],
+                         db=config['mysql']['db'],
+
+                         local_infile=1,
+                         use_unicode=True,
+                         charset='utf8mb4',
+
+                         autocommit=True)
+    # print "successfully connected to mysql database"
+    cur = db.cursor()
+
     project_id = int(attr.split("_")[0])
     github_id = int(attr.split("_")[1])
     print "handling project_id: %d, github_id: %d" % (project_id, github_id)
@@ -106,6 +119,8 @@ def crawl(attr):
         soup = BeautifulSoup(data, 'html.parser')
         discussion_timeline_actions = soup.find_all("div", class_=re.compile("discussion-timeline-actions"))
         if len(discussion_timeline_actions) != 1:
+            cur.close()
+            db.close()
             print "error with this page: " + url
             sys.exit(-1)
         else:
@@ -114,8 +129,12 @@ def crawl(attr):
                         (project_id, github_id, url, discussion_timeline_actions[0]))
     else:
         print "404 error with this page: " + url
+        cur.close()
+        db.close()
         sys.exit(-1)
 
+    cur.close()
+    db.close()
 
 # define the pool for multiprocessing
 cores = multiprocessing.cpu_count()
