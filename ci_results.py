@@ -112,13 +112,16 @@ def crawl(attr):
             cur.execute("insert into pr_htmls (project_id, github_id, url, discussion_timeline_actions) "
                         "values (%s, %s, %s, %s)",
                         (project_id, github_id, url, discussion_timeline_actions[0]))
+    else:
+        print "404 error with this page: " + url
+        sys.exit(-1)
 
 
 # define the pool for multiprocessing
 cores = multiprocessing.cpu_count()
 pool = multiprocessing.Pool(cores)
 # put all the tasks into the pool
-pool.imap(crawl, tasks)
+pool.imap_unordered(crawl, tasks)
 pool.close()
 pool.join()
 print "finish"
