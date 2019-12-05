@@ -101,7 +101,7 @@ def newLoop():
 
     # define the pool for multiprocessing
     cores = multiprocessing.cpu_count()
-    pool = multiprocessing.Pool(cores / 2)
+    pool = multiprocessing.Pool(2)
 
     print "A new loop: " + str(time.time())
     tasks = []
