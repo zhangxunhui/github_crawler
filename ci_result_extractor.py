@@ -135,6 +135,9 @@ if __name__ == "__main__":
                     which_tool = name.lower()
                 else:
                     which_tool = name.split("/")[0].lower()
+            # handle some exceptions
+            if which_tool.startswith("travis ci"):
+                which_tool = 'travis-ci'  # https://github.com/travis-ci/travis-build/pull/1571
 
             # 2. verify by url
             if href is not None:
