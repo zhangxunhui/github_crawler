@@ -592,7 +592,7 @@ Setup Maven,/marketplace/actions/setup-maven
 GitHub Upload Release Artifacts,/marketplace/actions/github-upload-release-artifacts
 Fastlane Action,/marketplace/actions/fastlane-action
 Unity - Return License,/marketplace/actions/unity-return-license
-cached-docker-build-push,/marketplace/actions/cached-docker-build-push
+cached-docker-build-push,/marketplace/actions/cached-docker-build-pushlegal/cla
 Unity - Builder,/marketplace/actions/unity-builder
 Git Issue Creation,/marketplace/actions/git-issue-creation
 Continuous Benchmark,/marketplace/actions/continuous-benchmark

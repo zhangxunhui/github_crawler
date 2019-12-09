@@ -124,15 +124,21 @@ if __name__ == "__main__":
             if name.startswith('ci') or name.startswith('continuous-integration'):
                 which_tool = name.split("/")[1].lower()
             else:
-                which_tool = name.split("/")[0].lower()
+                if which_tool.lower() == "legal/cla":
+                    which_tool = which_tool.lower()
+                else:
+                    which_tool = name.split("/")[0].lower()
 
             # 2. verify by url
             if href is not None:
                 if which_tool not in href:
                     if which_tool == "jenkins":
-                        continue # jenkins has it's own configed web url
-                    print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
-                    sys.exit(-1)
+                        pass # jenkins has it's own configed web url
+                    elif which_tool == "legal/cla":
+                        pass # used by odoo/odoo project itself(https://github.com/odoo/odoo/pull/26490)
+                    else:
+                        print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
+                        sys.exit(-1)
 
             # read pr_create time
             cur.execute("select created_at "
