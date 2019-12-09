@@ -192,9 +192,11 @@ if __name__ == "__main__":
                                 which_tool = "jenkins" # https://github.com/pytorch/pytorch/pull/7653
                             elif which_tool.startswith("pull-kubernetes"):
                                 pass # https://github.com/kubernetes/kubernetes/pull/72875 temporary
-                            elif href.startswith("http://buildbot.holoviews.org") or "duktape" in href:
+                            elif href.startswith("http://buildbot.holoviews.org") or "duktape" in href\
+                                    or (project_id == 75061625 and name == "rtc build"):
                                 # https://github.com/holoviz/holoviews/pull/3385 (web not used anymore)
                                 # https://github.com/svaarala/duktape/pull/575 (Duktape is an embeddable ECMAScript® engine with a focus on portability and compact footprint. By integrating Duktape into your C/C++ program you can easily extend its functionality through scripting)
+                                # https://github.com/OpenLiberty/open-liberty/pull/2693 (this cannot be decided)
                                 continue
                             elif "travis-ci" in href:
                                 which_tool = "travis-ci" # https://github.com/flot/flot/pull/1225
