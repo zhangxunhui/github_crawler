@@ -151,7 +151,7 @@ if __name__ == "__main__":
             created_at = cur.fetchone()[0]
 
             # 3. insert into table
-            cur.execute("insert into pr_cis (project_id, pr_html_id, github_id, created_at, tool_name, strong_name, description, detail_href result) values "
+            cur.execute("insert into pr_cis (project_id, pr_html_id, github_id, created_at, tool_name, strong_name, description, detail_href, result) values "
                         "(%s, %s, %s, %s, %s, %s, %s, %s, %s)", (project_id, pr_html_id, github_id, created_at, which_tool, name, desc, href, ci_result))
         db.commit() # commit after a pr is handled
     print "finish"
