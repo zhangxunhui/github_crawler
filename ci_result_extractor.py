@@ -132,6 +132,8 @@ if __name__ == "__main__":
                     continue # all the apps don't take into consideration # https://github.com/hashicorp/vault/pull/5815
                 elif executor["href"].startswith("https://tfe.hashicorp.engineering"):
                     continue # Terraform is something like docker/kubernates, a devops platform, not a CI tool
+                elif executor["href"].startswith("https://snyk.io"):
+                    continue # https://github.com/jmxtrans/jmxtrans/pull/686 (Snyk is on a mission to help developers use open source and stay secure - not CI tool)
             # ci_result
             ci_result = None
             merge_status_div = str(t.find("svg", class_=re.compile("octicon.*")))
