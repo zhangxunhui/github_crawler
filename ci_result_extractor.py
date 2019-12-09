@@ -102,7 +102,11 @@ if __name__ == "__main__":
                     sys.exit(-1)
             else:
                 print "error: this ci tools does not have result. Project_id: %d, Github_id: %d" % (project_id, github_id)
-                sys.exit(-1)
+                if project_id == 75061625 and github_id == 7051:
+                    continue
+                else:
+                    sys.exit(-1)
+                    # https://github.com/OpenLiberty/open-liberty/pull/7051 - ci has not finished yet
 
             # name & description
             name = t.find("strong", class_=re.compile("text-emphasized")).getText().strip()
