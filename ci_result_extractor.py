@@ -87,6 +87,18 @@ if __name__ == "__main__":
 
         # find all the tools
         for t in tool_results:
+
+            # name & description
+            name = t.find("strong", class_=re.compile("text-emphasized")).getText().strip()
+            if name.startswith('coverage/') or name.startswith('legal/cla') or name.startswith('Datree'):
+                # https://github.com/piqueserver/piqueserver/pull/496(coverage/coveralls) this is not a ci tool
+                # https://github.com/odoo/odoo/pull/26490(used by odoo/odoo project itself) not a ci tool (manually check)
+                # https://github.com/edx/open-edx-proposals/pull/100 (Datree is not a ci tool)
+                continue
+            desc = t.find("div", class_=re.compile("text-gray.*")).getText()
+            desc = desc.replace(name, "").replace(u'\ufffd', "").strip()
+
+
             # ci_result
             ci_result = None
             merge_status_div = str(t.find("svg", class_=re.compile("octicon.*")))
@@ -108,11 +120,6 @@ if __name__ == "__main__":
                 print "error: this ci tools does not have result. Project_id: %d, Github_id: %d" % (project_id, github_id)
                 sys.exit(-1)
 
-            # name & description
-            name = t.find("strong", class_=re.compile("text-emphasized")).getText().strip()
-            desc = t.find("div", class_=re.compile("text-gray.*")).getText()
-            desc = desc.replace(name, "").replace(u'\ufffd', "").strip()
-
             # href of detail tag
             href = None
             detail = t.find("a", class_=re.compile("status-actions"), href = True)
@@ -126,12 +133,6 @@ if __name__ == "__main__":
             # get the name of the target ci tool
             # 1. match by name
             which_tool = None
-            if name.startswith('coverage/') or name.startswith('legal/cla') or name.startswith('Datree'):
-                # https://github.com/piqueserver/piqueserver/pull/496(coverage/coveralls) this is not a ci tool
-                # https://github.com/odoo/odoo/pull/26490(used by odoo/odoo project itself) not a ci tool (manually check)
-                # https://github.com/edx/open-edx-proposals/pull/100 (Datree is not a ci tool)
-                continue
-
             if name.startswith('ci') or name.startswith('continuous-integration'):
                 which_tool = name.split("/")[1].lower()
                 if str(which_tool).startswith("circleci:"):
