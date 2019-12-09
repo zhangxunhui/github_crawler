@@ -22,3 +22,12 @@ def writeCSV(filepath, contentList):
 
         for content in contentList:
             f_writer.writerow(content)
+
+
+def readCSV(filepath):
+    result = []
+    with open(filepath) as f:
+        csv_reader = csv.reader(f, delimiter=',')
+        for row in csv_reader:
+            result.append(row)
+    return result

@@ -19,7 +19,7 @@ def create_table(cur, tableName):
     except Exception as e:
         exists = False
     if exists == False:
-        sql = "CREATE TABLE `pr_htmls` (" \
+        sql = "CREATE TABLE `"+ tableName + "` (" \
               "`id` int(11) NOT NULL AUTO_INCREMENT," \
               "`project_id` int(11) DEFAULT NULL," \
               "`github_id` int(11) DEFAULT NULL," \
