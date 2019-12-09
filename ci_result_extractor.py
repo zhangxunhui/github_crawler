@@ -159,6 +159,8 @@ if __name__ == "__main__":
                     if which_tool not in href:
                         if which_tool == "jenkins":
                             pass # jenkins has it's own configed web url
+                        elif which_tool.startswith("pull-kubernetes"):
+                            pass # https://github.com/kubernetes/kubernetes/pull/72875 temporary
                         else:
                             print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
                             sys.exit(-1)
