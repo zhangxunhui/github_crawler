@@ -92,11 +92,11 @@ if __name__ == "__main__":
             which_tool = None
 
             # name & description
-            name = t.find("strong", class_=re.compile("text-emphasized")).getText().strip()
-            if name.startswith('coverage/') or name.startswith('legal/cla') or name.startswith('Datree') or \
+            name = t.find("strong", class_=re.compile("text-emphasized")).getText().strip().lower()
+            if name.startswith('coverage/') or name.startswith('legal/cla') or name.startswith('datree') or \
                     name.startswith("cla/") or name.startswith("license/cla") or name.startswith("deploy/netlify") or \
-                    name.startswith('review/gitmate') or name.startswith("LGTM") or name.startswith("DCO") or \
-                    name.startswith('WIP') or name.startswith("licence/cla") or name.endswith("pivotal-cla"):
+                    name.startswith('review/gitmate') or name.startswith("lgtm") or name.startswith("dco") or \
+                    name.startswith('wip') or name.startswith("licence/cla") or name.endswith("pivotal-cla"):
                 # https://github.com/piqueserver/piqueserver/pull/496(coverage/coveralls) this is not a ci tool
                 # https://github.com/odoo/odoo/pull/26490(used by odoo/odoo project itself) not a ci tool (manually check)
                 # https://github.com/edx/open-edx-proposals/pull/100 (Datree is not a ci tool)
@@ -115,7 +115,7 @@ if __name__ == "__main__":
 
             # name exceptions:
             # 1. https://github.com/apache/kafka/pull/7782 (jenkins)
-            if project_id == 45297 and name.startswith("JDK"):
+            if project_id == 45297 and name.startswith("jdk"):
                 which_tool = 'jenkins'
 
             # executor url
