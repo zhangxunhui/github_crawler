@@ -124,6 +124,8 @@ if __name__ == "__main__":
             which_tool = None
             if name.startswith('ci') or name.startswith('continuous-integration'):
                 which_tool = name.split("/")[1].lower()
+                if which_tool.starts_with("circleci:"):
+                    which_tool = "circleci"
             else:
                 if name.lower() == "legal/cla":
                     which_tool = name.lower()
