@@ -102,8 +102,9 @@ if __name__ == "__main__":
             # executor url
             executor = t.find("a", class_=re.compile("d-inline-block tooltipped*"), href = True)
             # https://github.com/kubernetes/kubernetes/pull/72875 (there are many websites for k8s tools)
-            if executor["href"].endswith("k8s-ci-robot"):
-                name = "k8s"
+            if executor is not None:
+                if executor["href"].endswith("k8s-ci-robot"):
+                    name = "k8s"
 
             # ci_result
             ci_result = None
