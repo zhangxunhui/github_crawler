@@ -122,13 +122,15 @@ if __name__ == "__main__":
             # 1. match by name
             which_tool = None
             if name.startswith('ci') or name.startswith('continuous-integration'):
-                which_tool = name.split("/")[1]
+                which_tool = name.split("/")[1].lower()
             else:
-                which_tool = name.split("/")[0]
+                which_tool = name.split("/")[0].lower()
 
             # 2. verify by url
             if href is not None:
                 if which_tool not in href:
+                    if which_tool == "jenkins":
+                        continue # jenkins has it's own configed web url
                     print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
                     sys.exit(-1)
 
