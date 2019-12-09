@@ -126,9 +126,10 @@ if __name__ == "__main__":
             # get the name of the target ci tool
             # 1. match by name
             which_tool = None
-            if name.startswith('coverage/') or name.startswith('legal/cla'):
+            if name.startswith('coverage/') or name.startswith('legal/cla') or name.startswith('Datree'):
                 # https://github.com/piqueserver/piqueserver/pull/496(coverage/coveralls) this is not a ci tool
                 # https://github.com/odoo/odoo/pull/26490(used by odoo/odoo project itself) not a ci tool (manually check)
+                # https://github.com/edx/open-edx-proposals/pull/100 (Datree is not a ci tool)
                 continue
 
             if name.startswith('ci') or name.startswith('continuous-integration'):
