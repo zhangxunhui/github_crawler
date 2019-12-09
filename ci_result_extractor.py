@@ -190,6 +190,10 @@ if __name__ == "__main__":
                                 pass # https://github.com/kubernetes/kubernetes/pull/72875 temporary
                             elif href.startswith("http://buildbot.holoviews.org"):
                                 continue # https://github.com/holoviz/holoviews/pull/3385 (web not used anymore)
+                            elif "travis-ci" in href:
+                                which_tool = "travis-ci"
+                            elif "circleci" in href:
+                                which_tool = 'circleci'
                             else:
                                 print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
                                 sys.exit(-1)
