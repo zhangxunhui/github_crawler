@@ -124,7 +124,7 @@ if __name__ == "__main__":
             if name.startswith('ci') or name.startswith('continuous-integration'):
                 which_tool = name.split("/")[1].lower()
             else:
-                if which_tool.lower() == "legal/cla":
+                if name.lower() == "legal/cla":
                     which_tool = which_tool.lower()
                 else:
                     which_tool = name.split("/")[0].lower()
