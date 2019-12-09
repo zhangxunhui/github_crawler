@@ -142,13 +142,17 @@ if __name__ == "__main__":
                 which_tool = 'travis-ci'  # https://github.com/travis-ci/travis-build/pull/1571
 
             # 2. verify by url
-            if href is not None:
-                if which_tool not in href:
-                    if which_tool == "jenkins":
-                        pass # jenkins has it's own configed web url
-                    else:
-                        print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
-                        sys.exit(-1)
+            if which_tool == "travis-ci":
+                # https://github.com/mate-academy/layout_style-it-up/pull/28 (Travis ci can be configed on Github page)
+                pass # don't need to check, these must be ci tools
+            else:
+                if href is not None:
+                    if which_tool not in href:
+                        if which_tool == "jenkins":
+                            pass # jenkins has it's own configed web url
+                        else:
+                            print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
+                            sys.exit(-1)
 
             # read pr_create time
             cur.execute("select created_at "
