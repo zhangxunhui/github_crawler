@@ -90,23 +90,23 @@ if __name__ == "__main__":
             # ci_result
             ci_result = None
             merge_status_div = str(t.find("svg", class_=re.compile("octicon.*")))
-            matcher = re.match('<svg.*?text\-(.*?)\"', merge_status_div)
+            matcher = re.match('<svg.*?d\-block (.*?)\"', merge_status_div)
             if matcher:
                 r = matcher.group(1)
-                if r == "red":
+                if r == "text-red":
                     ci_result = 'failed'
-                elif r == "green":
+                elif r == "text-green":
                     ci_result = 'passed'
+                elif r == "color-yellow-7":
+                    # https://github.com/OpenLiberty/open-liberty/pull/7051
+                    # https://github.com/makersacademy/rps-challenge/pull/1096
+                    ci_result = 'unfinished'
                 else:
                     print "haven't met this before! Project_id: %d, Github_id: %d" % (project_id, github_id)
                     sys.exit(-1)
             else:
                 print "error: this ci tools does not have result. Project_id: %d, Github_id: %d" % (project_id, github_id)
-                if project_id == 75061625 and github_id == 7051:
-                    continue
-                else:
-                    sys.exit(-1)
-                    # https://github.com/OpenLiberty/open-liberty/pull/7051 - ci has not finished yet
+                sys.exit(-1)
 
             # name & description
             name = t.find("strong", class_=re.compile("text-emphasized")).getText().strip()
