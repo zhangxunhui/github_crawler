@@ -96,7 +96,7 @@ if __name__ == "__main__":
             if name.startswith('coverage/') or name.startswith('legal/cla') or name.startswith('Datree') or \
                     name.startswith("cla/") or name.startswith("license/cla") or name.startswith("deploy/netlify") or \
                     name.startswith('review/gitmate') or name.startswith("LGTM") or name.startswith("DCO") or \
-                    name.startswith('WIP') or name.startswith("licence/cla"):
+                    name.startswith('WIP') or name.startswith("licence/cla") or name.endswith("pivotal-cla"):
                 # https://github.com/piqueserver/piqueserver/pull/496(coverage/coveralls) this is not a ci tool
                 # https://github.com/odoo/odoo/pull/26490(used by odoo/odoo project itself) not a ci tool (manually check)
                 # https://github.com/edx/open-edx-proposals/pull/100 (Datree is not a ci tool)
@@ -108,6 +108,7 @@ if __name__ == "__main__":
                 # https://github.com/ansible/ansible-lint/pull/518 (DCO - This App enforces the Developer Certificate of Origin (DCO) on Pull Requests)
                 # https://github.com/ansible/ansible-lint/pull/518 (WIP - This app Allow authors of pull requests to set status to pending while still working on it)
                 # https://github.com/spf13/viper/pull/272 (licence/cla)
+                # https://github.com/spring-projects/spring-data-mongodb/pull/737 (ci/pivotal-cla!!!)
                 continue
             desc = t.find("div", class_=re.compile("text-gray.*")).getText()
             desc = desc.replace(name, "").replace(u'\ufffd', "").strip()
@@ -169,6 +170,8 @@ if __name__ == "__main__":
                     which_tool = name.split("/")[1].lower()
                     if str(which_tool).startswith("circleci:"):
                         which_tool = "circleci"
+                elif name.startswith('concourse-ci'):
+                    which_tool = 'concourse-ci'
                 else:
                     which_tool = name.split("/")[0].lower()
                 # handle some exceptions
@@ -182,8 +185,9 @@ if __name__ == "__main__":
                 else:
                     if href is not None:
                         if which_tool not in href:
-                            if which_tool == "jenkins":
+                            if which_tool == "jenkins" or which_tool == 'concourse-ci':
                                 pass # jenkins has it's own configed web url
+                                # https://github.com/spring-projects/spring-data-mongodb/pull/737 (concourse-ci)
                             elif "jenkins" in href:
                                 which_tool = "jenkins" # https://github.com/pytorch/pytorch/pull/7653
                             elif which_tool.startswith("pull-kubernetes"):
@@ -191,7 +195,7 @@ if __name__ == "__main__":
                             elif href.startswith("http://buildbot.holoviews.org"):
                                 continue # https://github.com/holoviz/holoviews/pull/3385 (web not used anymore)
                             elif "travis-ci" in href:
-                                which_tool = "travis-ci"
+                                which_tool = "travis-ci" # https://github.com/flot/flot/pull/1225
                             elif "circleci" in href:
                                 which_tool = 'circleci'
                             else:
