@@ -126,15 +126,17 @@ if __name__ == "__main__":
             # get the name of the target ci tool
             # 1. match by name
             which_tool = None
+            if name.startswith('coverage/') or name.startswith('legal/cla'):
+                # https://github.com/piqueserver/piqueserver/pull/496(coverage/coveralls) this is not a ci tool
+                # https://github.com/odoo/odoo/pull/26490(used by odoo/odoo project itself) not a ci tool (manually check)
+                continue
+
             if name.startswith('ci') or name.startswith('continuous-integration'):
                 which_tool = name.split("/")[1].lower()
                 if str(which_tool).startswith("circleci:"):
                     which_tool = "circleci"
             else:
-                if name.lower() == "legal/cla":
-                    which_tool = name.lower()
-                else:
-                    which_tool = name.split("/")[0].lower()
+                which_tool = name.split("/")[0].lower()
             # handle some exceptions
             if which_tool.startswith("travis ci"):
                 which_tool = 'travis-ci'  # https://github.com/travis-ci/travis-build/pull/1571
@@ -144,8 +146,6 @@ if __name__ == "__main__":
                 if which_tool not in href:
                     if which_tool == "jenkins":
                         pass # jenkins has it's own configed web url
-                    elif which_tool == "legal/cla":
-                        pass # used by odoo/odoo project itself(https://github.com/odoo/odoo/pull/26490)
                     else:
                         print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
                         sys.exit(-1)
