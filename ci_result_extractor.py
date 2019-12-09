@@ -29,6 +29,7 @@ def create_table(cur, tableName):
               "`tool_name` varchar(255) DEFAULT NULL, " \
               "`strong_name` varchar(255) DEFAULT NULL, " \
               "`description` varchar(255) DEFAULT NULL, " \
+              "`detail_href` varchar(255) DEFAULT NULL, " \
               "`result` varchar(255) DEFAULT NULL, " \
               "PRIMARY KEY (`id`)," \
               "KEY `project_id` (`project_id`)" \
@@ -125,7 +126,7 @@ if __name__ == "__main__":
                 which_tool = name.split("/")[1].lower()
             else:
                 if name.lower() == "legal/cla":
-                    which_tool = which_tool.lower()
+                    which_tool = name.lower()
                 else:
                     which_tool = name.split("/")[0].lower()
 
@@ -150,7 +151,7 @@ if __name__ == "__main__":
             created_at = cur.fetchone()[0]
 
             # 3. insert into table
-            cur.execute("insert into pr_cis (project_id, pr_html_id, github_id, created_at, tool_name, strong_name, description, result) values "
-                        "(%s, %s, %s, %s, %s, %s, %s, %s)", (project_id, pr_html_id, github_id, created_at, which_tool, name, desc, ci_result))
+            cur.execute("insert into pr_cis (project_id, pr_html_id, github_id, created_at, tool_name, strong_name, description, detail_href result) values "
+                        "(%s, %s, %s, %s, %s, %s, %s, %s, %s)", (project_id, pr_html_id, github_id, created_at, which_tool, name, desc, href, ci_result))
         db.commit() # commit after a pr is handled
     print "finish"
