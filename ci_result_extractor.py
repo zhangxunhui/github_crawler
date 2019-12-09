@@ -118,6 +118,8 @@ if __name__ == "__main__":
             if executor is not None:
                 if executor["href"].endswith("k8s-ci-robot"):
                     which_tool = "k8s"
+                elif executor["href"].endswith("onnxbot"):
+                    continue # https://github.com/pytorch/pytorch/pull/7653 (onnx is an interchangeable AI model, AI developers can more easily move models between state-of-the-art tools and choose the combination that is best for them)
 
             # ci_result
             ci_result = None
@@ -172,6 +174,8 @@ if __name__ == "__main__":
                         if which_tool not in href:
                             if which_tool == "jenkins":
                                 pass # jenkins has it's own configed web url
+                            elif "jenkins" in href:
+                                which_tool = "jenkins" # https://github.com/pytorch/pytorch/pull/7653
                             elif which_tool.startswith("pull-kubernetes"):
                                 pass # https://github.com/kubernetes/kubernetes/pull/72875 temporary
                             else:
