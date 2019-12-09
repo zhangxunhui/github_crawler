@@ -74,6 +74,7 @@ if __name__ == "__main__":
     items = cur.fetchall()
 
     for item in items:
+
         pr_html_id = item[0]
         project_id = item[1]
         github_id = item[2]
@@ -88,6 +89,8 @@ if __name__ == "__main__":
         # find all the tools
         for t in tool_results:
 
+            which_tool = None
+
             # name & description
             name = t.find("strong", class_=re.compile("text-emphasized")).getText().strip()
             if name.startswith('coverage/') or name.startswith('legal/cla') or name.startswith('Datree') or name.startswith("cla/"):
@@ -99,12 +102,17 @@ if __name__ == "__main__":
             desc = t.find("div", class_=re.compile("text-gray.*")).getText()
             desc = desc.replace(name, "").replace(u'\ufffd', "").strip()
 
+            # name exceptions:
+            # 1. https://github.com/apache/kafka/pull/7782 (jenkins)
+            if project_id == 45297 and name.startswith("JDK"):
+                which_tool = 'jenkins'
+
             # executor url
             executor = t.find("a", class_=re.compile("d-inline-block tooltipped*"), href = True)
             # https://github.com/kubernetes/kubernetes/pull/72875 (there are many websites for k8s tools)
             if executor is not None:
                 if executor["href"].endswith("k8s-ci-robot"):
-                    name = "k8s"
+                    which_tool = "k8s"
 
             # ci_result
             ci_result = None
@@ -139,31 +147,31 @@ if __name__ == "__main__":
 
             # get the name of the target ci tool
             # 1. match by name
-            which_tool = None
-            if name.startswith('ci') or name.startswith('continuous-integration'):
-                which_tool = name.split("/")[1].lower()
-                if str(which_tool).startswith("circleci:"):
-                    which_tool = "circleci"
-            else:
-                which_tool = name.split("/")[0].lower()
-            # handle some exceptions
-            if which_tool.startswith("travis ci"):
-                which_tool = 'travis-ci'  # https://github.com/travis-ci/travis-build/pull/1571
+            if which_tool is None:
+                if name.startswith('ci') or name.startswith('continuous-integration'):
+                    which_tool = name.split("/")[1].lower()
+                    if str(which_tool).startswith("circleci:"):
+                        which_tool = "circleci"
+                else:
+                    which_tool = name.split("/")[0].lower()
+                # handle some exceptions
+                if which_tool.startswith("travis ci"):
+                    which_tool = 'travis-ci'  # https://github.com/travis-ci/travis-build/pull/1571
 
-            # 2. verify by url
-            if which_tool == "travis-ci":
-                # https://github.com/mate-academy/layout_style-it-up/pull/28 (Travis ci can be configed on Github page)
-                pass # don't need to check, these must be ci tools
-            else:
-                if href is not None:
-                    if which_tool not in href:
-                        if which_tool == "jenkins":
-                            pass # jenkins has it's own configed web url
-                        elif which_tool.startswith("pull-kubernetes"):
-                            pass # https://github.com/kubernetes/kubernetes/pull/72875 temporary
-                        else:
-                            print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
-                            sys.exit(-1)
+                # 2. verify by url
+                if which_tool == "travis-ci":
+                    # https://github.com/mate-academy/layout_style-it-up/pull/28 (Travis ci can be configed on Github page)
+                    pass # don't need to check, these must be ci tools
+                else:
+                    if href is not None:
+                        if which_tool not in href:
+                            if which_tool == "jenkins":
+                                pass # jenkins has it's own configed web url
+                            elif which_tool.startswith("pull-kubernetes"):
+                                pass # https://github.com/kubernetes/kubernetes/pull/72875 temporary
+                            else:
+                                print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
+                                sys.exit(-1)
 
             # read pr_create time
             cur.execute("select created_at "
