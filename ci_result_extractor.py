@@ -93,7 +93,7 @@ if __name__ == "__main__":
 
             # name & description
             name = t.find("strong", class_=re.compile("text-emphasized")).getText().strip()
-            if name.startswith('coverage/') or name.startswith('legal/cla') or name.startswith('Datree') or name.startswith("cla/"):
+            if name.startswith('coverage/') or name.startswith('legal/cla') or name.startswith('Datree') or name.startswith("cla/") or name.startswith("license/cla"):
                 # https://github.com/piqueserver/piqueserver/pull/496(coverage/coveralls) this is not a ci tool
                 # https://github.com/odoo/odoo/pull/26490(used by odoo/odoo project itself) not a ci tool (manually check)
                 # https://github.com/edx/open-edx-proposals/pull/100 (Datree is not a ci tool)
