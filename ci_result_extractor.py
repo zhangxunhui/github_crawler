@@ -90,14 +90,20 @@ if __name__ == "__main__":
 
             # name & description
             name = t.find("strong", class_=re.compile("text-emphasized")).getText().strip()
-            if name.startswith('coverage/') or name.startswith('legal/cla') or name.startswith('Datree'):
+            if name.startswith('coverage/') or name.startswith('legal/cla') or name.startswith('Datree') or name.startswith("cla/"):
                 # https://github.com/piqueserver/piqueserver/pull/496(coverage/coveralls) this is not a ci tool
                 # https://github.com/odoo/odoo/pull/26490(used by odoo/odoo project itself) not a ci tool (manually check)
                 # https://github.com/edx/open-edx-proposals/pull/100 (Datree is not a ci tool)
+                # https://github.com/kubernetes/kubernetes/pull/72875 (cla is the check of Contribution License Agreement)
                 continue
             desc = t.find("div", class_=re.compile("text-gray.*")).getText()
             desc = desc.replace(name, "").replace(u'\ufffd', "").strip()
 
+            # executor url
+            executor = t.find("a", class_=re.compile("d-inline-block tooltipped*"), href = True)
+            # https://github.com/kubernetes/kubernetes/pull/72875 (there are many websites for k8s tools)
+            if executor["href"].endswith("k8s-ci-robot"):
+                name = "k8s"
 
             # ci_result
             ci_result = None

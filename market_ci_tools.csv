@@ -338,7 +338,7 @@ Upload Diawi,/marketplace/actions/upload-diawi
 JFrog CLI for GitHub Actions,/marketplace/actions/jfrog-cli-for-github-actions
 Nexus Repository Publisher for GitHub Actions,/marketplace/actions/nexus-repository-publisher-for-github-actions
 Azure Key Vault Action,/marketplace/actions/azure-key-vault-action
-Setup OKD OpenShift Cluster,/marketplace/actions/setup-okd-openshift-cluster
+Setup OKD OpenShift Cluster,/marketplace/actions/setupull-kubernetes-e2e-kindp-okd-openshift-cluster
 Code Climate Coverage,/marketplace/actions/code-climate-coverage
 action-ebuild-release,/marketplace/actions/action-ebuild-release
 action-ebuild-test,/marketplace/actions/action-ebuild-test
