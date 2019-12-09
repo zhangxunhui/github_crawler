@@ -180,7 +180,12 @@ if __name__ == "__main__":
                         "and prh.action = 'opened' "
                         "and pr.base_repo_id = %s "
                         "and pr.pullreq_id = %s", (project_id, github_id))
-            created_at = cur.fetchone()[0]
+            created_at = cur.fetchone()
+            if created_at is None:
+                # record miss in pull_request_history table (e.g. pr_id: 58108981)
+                created_at = None
+            else:
+                created_at = created_at[0]
 
             # 3. insert into table
             cur.execute("insert into pr_cis (project_id, pr_html_id, github_id, created_at, tool_name, strong_name, description, detail_href, result) values "
