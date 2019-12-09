@@ -187,6 +187,8 @@ if __name__ == "__main__":
                                 which_tool = "jenkins" # https://github.com/pytorch/pytorch/pull/7653
                             elif which_tool.startswith("pull-kubernetes"):
                                 pass # https://github.com/kubernetes/kubernetes/pull/72875 temporary
+                            elif href.startswith("http://buildbot.holoviews.org"):
+                                continue # https://github.com/holoviz/holoviews/pull/3385 (web not used anymore)
                             else:
                                 print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
                                 sys.exit(-1)
