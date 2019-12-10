@@ -87,7 +87,7 @@ if __name__ == "__main__":
         ownername = tmp[0]
         reponame = tmp[1]
         url = "https://github.com/" + ownername + "/" + reponame + "/pull/" + str(github_id)
-        print url
+        print "handling item: " + url
 
         # print "handling item: %d/%d" % (project_id, github_id)
 
@@ -163,11 +163,11 @@ if __name__ == "__main__":
                     ci_result = 'unfinished'
                 else:
                     # print "haven't met this before! Project_id: %d, Github_id: %d" % (project_id, github_id)
-                    print url
+                    print "haven't met this before! " + url
                     sys.exit(-1)
             else:
                 # print "error: this ci tools does not have result. Project_id: %d, Github_id: %d" % (project_id, github_id)
-                print url
+                print "error: this ci tools does not have result: " + url
                 sys.exit(-1)
 
             # href of detail tag
@@ -176,7 +176,7 @@ if __name__ == "__main__":
             if detail is not None:
                 if detail.getText().strip() != "Details":
                     # print "something new for the page. Project_id: %d, Github_id: %d" % (project_id, github_id)
-                    print url
+                    print "something new for the page: " + url
                     sys.exit(-1)
                 else:
                     href = detail["href"]
@@ -222,7 +222,7 @@ if __name__ == "__main__":
                                 which_tool = 'circleci'
                             else:
                                 # print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
-                                print url
+                                print "error with this ci tool name: " + url
                                 sys.exit(-1)
 
             # read pr_create time
