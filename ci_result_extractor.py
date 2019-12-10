@@ -186,12 +186,12 @@ if __name__ == "__main__":
             if which_tool is None:
                 if name.startswith('ci') or name.startswith('continuous-integration'):
                     which_tool = name.split("/")[1].lower()
-                    if str(which_tool).startswith("circleci:"):
-                        which_tool = "circleci"
+                    which_tool = re.split('\/|:', which_tool)[0].lower() # circleci:
                 elif name.startswith('concourse-ci'):
                     which_tool = 'concourse-ci'
                 else:
-                    which_tool = name.split("/")[0].lower()
+                    which_tool = re.split('\/|:', name)[0].lower() # https://github.com/gatsbyjs/gatsby/pull/8379
+
                 # handle some exceptions
                 if which_tool.startswith("travis ci"):
                     which_tool = 'travis-ci'  # https://github.com/travis-ci/travis-build/pull/1571
