@@ -78,7 +78,18 @@ if __name__ == "__main__":
         pr_html_id = item[0]
         project_id = item[1]
         github_id = item[2]
-        print "handling item: %d/%d" % (project_id, github_id)
+
+        cur.execute("select u.login, p.name "
+                    "from users u, projects p "
+                    "where u.id = p.owner_id "
+                    "and p.id = %s", (project_id,))
+        tmp = cur.fetchone()
+        ownername = tmp[0]
+        reponame = tmp[1]
+        url = "https://github.com/" + ownername + "/" + reponame + "/pull/" + str(github_id)
+        print url
+
+        # print "handling item: %d/%d" % (project_id, github_id)
 
         discussion_timeline_actions = item[3]
 
