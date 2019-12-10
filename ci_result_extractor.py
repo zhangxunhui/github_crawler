@@ -220,6 +220,8 @@ if __name__ == "__main__":
                                 which_tool = "travis-ci" # https://github.com/flot/flot/pull/1225
                             elif "circleci" in href:
                                 which_tool = 'circleci'
+                            elif "http://danger" in href or which_tool == "danger":
+                                which_tool = 'dangerci' # https://github.com/gatsbyjs/gatsby/pull/8379
                             else:
                                 # print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
                                 print "error with this ci tool name: " + url
