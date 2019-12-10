@@ -224,6 +224,8 @@ if __name__ == "__main__":
                                 which_tool = 'circleci'
                             elif "http://danger" in href or which_tool == "danger":
                                 which_tool = 'dangerci' # https://github.com/gatsbyjs/gatsby/pull/8379
+                            elif which_tool.startswith("azure pipelines"):
+                                which_tool = "azure pipelines" # https://github.com/python/cpython/pull/5053
                             else:
                                 # print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
                                 print "error with this ci tool name: " + url
