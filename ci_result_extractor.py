@@ -128,12 +128,14 @@ if __name__ == "__main__":
                     continue # https://github.com/pytorch/pytorch/pull/7653 (onnx is an interchangeable AI model, AI developers can more easily move models between state-of-the-art tools and choose the combination that is best for them)
                 elif executor["href"].endswith("azure-pipelines"):
                     continue # https://github.com/ansible/ansible-lint/pull/518 (Azure Pipelines is an app for Continuously build, test, and deploy to any platform and cloud)
-                elif executor["href"].startswith("/apps/"):
-                    continue # all the apps don't take into consideration # https://github.com/hashicorp/vault/pull/5815
+                elif executor["href"].startswith("/apps/netlify"):
+                    continue # https://github.com/hashicorp/vault/pull/5815
                 elif executor["href"].startswith("https://tfe.hashicorp.engineering"):
                     continue # Terraform is something like docker/kubernates, a devops platform, not a CI tool
                 elif executor["href"].startswith("https://snyk.io"):
                     continue # https://github.com/jmxtrans/jmxtrans/pull/686 (Snyk is on a mission to help developers use open source and stay secure - not CI tool)
+                elif executor["href"].startswith("https://cla.hashicorp.com"):
+                    continue # https://github.com/hashicorp/vault/pull/5815
             # ci_result
             ci_result = None
             merge_status_div = str(t.find("svg", class_=re.compile("octicon.*")))
