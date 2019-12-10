@@ -162,10 +162,12 @@ if __name__ == "__main__":
                     # https://github.com/makersacademy/rps-challenge/pull/1096
                     ci_result = 'unfinished'
                 else:
-                    print "haven't met this before! Project_id: %d, Github_id: %d" % (project_id, github_id)
+                    # print "haven't met this before! Project_id: %d, Github_id: %d" % (project_id, github_id)
+                    print url
                     sys.exit(-1)
             else:
-                print "error: this ci tools does not have result. Project_id: %d, Github_id: %d" % (project_id, github_id)
+                # print "error: this ci tools does not have result. Project_id: %d, Github_id: %d" % (project_id, github_id)
+                print url
                 sys.exit(-1)
 
             # href of detail tag
@@ -173,7 +175,8 @@ if __name__ == "__main__":
             detail = t.find("a", class_=re.compile("status-actions"), href = True)
             if detail is not None:
                 if detail.getText().strip() != "Details":
-                    print "something new for the page. Project_id: %d, Github_id: %d" % (project_id, github_id)
+                    # print "something new for the page. Project_id: %d, Github_id: %d" % (project_id, github_id)
+                    print url
                     sys.exit(-1)
                 else:
                     href = detail["href"]
@@ -218,7 +221,8 @@ if __name__ == "__main__":
                             elif "circleci" in href:
                                 which_tool = 'circleci'
                             else:
-                                print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
+                                # print "error with this ci tool name: %s. Project_id: %d, Github_id: %d" % (which_tool, project_id, github_id)
+                                print url
                                 sys.exit(-1)
 
             # read pr_create time
