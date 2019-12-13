@@ -88,8 +88,7 @@ if __name__ == "__main__":
         reponame = tmp[1]
         url = "https://github.com/" + ownername + "/" + reponame + "/pull/" + str(github_id)
         print "handling item: " + url
-
-        # print "handling item: %d/%d" % (project_id, github_id)
+        print "handling item: %d/%d" % (project_id, github_id)
 
         discussion_timeline_actions = item[3]
 
