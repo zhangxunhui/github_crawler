@@ -130,40 +130,52 @@ class crawlThread(threading.Thread):
                 r.add_header('cookie', c)
                 r.add_header('User-Agent', a)
                 resp = ulib.urlopen(r)
-                if str(resp.code).startswith("2") == True:
-                    data = resp.read().decode('utf-8')
-                    soup = BeautifulSoup(data, 'html.parser')
-                    discussion_timeline_actions = soup.find_all("div", class_=re.compile("discussion-timeline-actions"))
-                    if len(discussion_timeline_actions) != 1 or "Already have an account?" in str(
-                            discussion_timeline_actions):
-                        print "error with this page: " + url
-                        sys.exit(-1)
-                    else:
-                        conn_thread = MySQLdb.connect(host='localhost',
-                                             user=config['mysql']['user'],
-                                             passwd=config['mysql']['passwd'],
-                                             db=config['mysql']['db'],
 
-                                             local_infile=1,
-                                             use_unicode=True,
-                                             charset='utf8mb4',
-
-                                             autocommit=True)
-                        cur_thread = conn_thread.cursor()
-
-                        # print "handled project_id: %d, github_id: %d" % (project_id, github_id)
-                        cur_thread.execute("insert into pr_htmls (project_id, github_id, url, discussion_timeline_actions) "
-                                    "values (%s, %s, %s, %s)",
-                                    (project_id, github_id, url, discussion_timeline_actions[0]))
-                        cur_thread.close()
-                        conn_thread.close()
+                data = resp.read().decode('utf-8')
+                soup = BeautifulSoup(data, 'html.parser')
+                discussion_timeline_actions = soup.find_all("div", class_=re.compile("discussion-timeline-actions"))
+                if len(discussion_timeline_actions) != 1 or "Already have an account?" in str(
+                        discussion_timeline_actions):
+                    print "error with this page: " + url
+                    sys.exit(-1)
                 else:
-                    print "404 error with this page: " + url
+                    conn_thread = MySQLdb.connect(host='localhost',
+                                         user=config['mysql']['user'],
+                                         passwd=config['mysql']['passwd'],
+                                         db=config['mysql']['db'],
+
+                                         local_infile=1,
+                                         use_unicode=True,
+                                         charset='utf8mb4',
+
+                                         autocommit=True)
+                    cur_thread = conn_thread.cursor()
+
+                    # print "handled project_id: %d, github_id: %d" % (project_id, github_id)
+                    cur_thread.execute("insert into pr_htmls (project_id, github_id, url, discussion_timeline_actions) "
+                                "values (%s, %s, %s, %s)",
+                                (project_id, github_id, url, discussion_timeline_actions[0]))
+                    cur_thread.close()
+                    conn_thread.close()
             except Queue.Empty:
                 return
             except ulib.HTTPError as e:
-                if e.code == 404:
-                    print "404 error with this page: " + url
+                print str(e.code) + " error with this page: " + url
+
+                conn_thread = MySQLdb.connect(host='localhost',
+                                              user=config['mysql']['user'],
+                                              passwd=config['mysql']['passwd'],
+                                              db=config['mysql']['db'],
+                                              local_infile=1,
+                                              use_unicode=True,
+                                              charset='utf8mb4',
+                                              autocommit=True)
+                cur_thread = conn_thread.cursor()
+                cur_thread.execute("insert into pr_htmls (project_id, github_id, url, discussion_timeline_actions) "
+                                   "values (%s, %s, %s, %s)",
+                                   (project_id, github_id, url, str(e.code) + " error"))  # to prevent the execution of the other time
+                cur_thread.close()
+                conn_thread.close()
             except Exception as e:
                 print "other exceptions: " + e.message
             # do whatever work you have to do on work
