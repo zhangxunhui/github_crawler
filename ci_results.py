@@ -147,6 +147,9 @@ class crawlThread(threading.Thread):
                     print "404 error with this page: " + url
             except Queue.Empty:
                 return
+            except ulib.HTTPError as e:
+                if e.code == 404:
+                    print "404 error with this page: " + url
             # do whatever work you have to do on work
             self.q.task_done()
 
