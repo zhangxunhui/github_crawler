@@ -139,10 +139,24 @@ class crawlThread(threading.Thread):
                         print "error with this page: " + url
                         sys.exit(-1)
                     else:
+                        conn_thread = MySQLdb.connect(host='localhost',
+                                             user=config['mysql']['user'],
+                                             passwd=config['mysql']['passwd'],
+                                             db=config['mysql']['db'],
+
+                                             local_infile=1,
+                                             use_unicode=True,
+                                             charset='utf8mb4',
+
+                                             autocommit=True)
+                        cur_thread = conn_thread.cursor()
+
                         # print "handled project_id: %d, github_id: %d" % (project_id, github_id)
-                        cur.execute("insert into pr_htmls (project_id, github_id, url, discussion_timeline_actions) "
+                        cur_thread.execute("insert into pr_htmls (project_id, github_id, url, discussion_timeline_actions) "
                                     "values (%s, %s, %s, %s)",
                                     (project_id, github_id, url, discussion_timeline_actions[0]))
+                        cur_thread.close()
+                        conn_thread.close()
                 else:
                     print "404 error with this page: " + url
             except Queue.Empty:
@@ -150,6 +164,8 @@ class crawlThread(threading.Thread):
             except ulib.HTTPError as e:
                 if e.code == 404:
                     print "404 error with this page: " + url
+            except Exception as e:
+                print "other exceptions: " + e.message
             # do whatever work you have to do on work
             self.q.task_done()
 
@@ -175,6 +191,10 @@ for project_id in project_ids:
     github_ids = cur.fetchall()
     for github_id in github_ids:
         tasks.append((project_id, github_id[0]))
+
+cur.close()
+db.close()
+
 tasks = list(set(tasks) - set(handled_tasks))
 print "finish reading pull_requests table"
 print "%d tasks left for handling" % (len(tasks))
