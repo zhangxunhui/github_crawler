@@ -145,7 +145,6 @@ class crawlThread(threading.Thread):
                                     (project_id, github_id, url, discussion_timeline_actions[0]))
                 else:
                     print "404 error with this page: " + url
-                    sys.exit(-1)
             except Queue.Empty:
                 return
             # do whatever work you have to do on work
